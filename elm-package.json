@@ -1,0 +1,16 @@
+{
+    "version": "2.0.1",
+    "summary": "2D Array library for Elm",
+    "repository": "https://github.com/tortus/elm-array-2d.git",
+    "license": "BSD-3-Clause",
+    "source-directories": [
+        "src"
+    ],
+    "exposed-modules": [
+        "Array2D"
+    ],
+    "dependencies": {
+        "elm-lang/core": "2.1.0 <= v < 4.0.0"
+    },
+    "elm-version": "0.15.0 <= v < 0.17.0"
+}
