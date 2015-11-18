@@ -1,11 +1,10 @@
 module Array2D
   ( Array2D
-  , empty, fromArray, fromList
+  , empty, fromArray, fromList, repeat
   , rows, columns, isEmpty
-  , getRow, getColumn, get
-  , set
-  , appendRow
-  , deleteRow, deleteColumn
+  , get, set
+  , getRow, appendRow, deleteRow
+  , getColumn, deleteColumn
   , map, indexedMap
   ) where
 
@@ -18,6 +17,24 @@ row is an Array or List of cells. Behavior if the nested arrays happen
 to be jagged is currently undefined / handled poorly, so don't do this!
 
     Array2D.fromList [["Row 1-Col 1", "Row 1-Col 2"], ["Row 2-Col 1", "Row 2-Col 2"]]
+
+# Initialization
+@docs empty, fromArray, fromList, repeat
+
+# Getting info
+@docs rows, columns, isEmpty
+
+# Fetching/updating individual cells
+@docs get, set
+
+# Adding/removing rows
+@docs getRow, appendRow, deleteRow
+
+# Adding/removing columns
+@docs getColumn deleteColumn
+
+# Mapping cell data
+@docs map, indexedMap
 -}
 
 
@@ -33,7 +50,7 @@ empty =
   { data = Array.empty }
 
 
-{-| Create an Array2D from an Array of Arrays (rows, then columns).
+{-| Create an Array2D from an Array of Arrays.
 
     let row1 = Array.fromList [1, 2]
         row2 = Array.fromList [2, 3]
@@ -45,7 +62,7 @@ fromArray array =
   { data = array }
 
 
-{-| Create an Array2D from a List of Lists (rows, then columns).
+{-| Create an Array2D from a List of Lists.
 
     fromList [[1, 2, 3], [4, 5, 6]]
 -}
