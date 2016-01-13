@@ -159,7 +159,7 @@ set row col newValue array2d =
     case rowAry of
       Nothing -> array2d
       Just rowAry ->
-        { array2d | data <- (Array.set row (Array.set col newValue rowAry) array2d.data) }
+        { array2d | data = (Array.set row (Array.set col newValue rowAry) array2d.data) }
 
 
 {-| Append a row
@@ -172,7 +172,7 @@ appendRow row array2d =
     wrappedRow = Array.fromList [row] -- Need to wrap in array for Array.append
     newRows = Array.append array2d.data wrappedRow
   in
-    { array2d | data <- newRows }
+    { array2d | data = newRows }
 
 
 -- Internal helper for deleting elements from Arrays
@@ -188,13 +188,13 @@ deleteArrayElt index array =
 {-| Delete a row -}
 deleteRow : Int -> Array2D a -> Array2D a
 deleteRow index array2d =
-  { array2d | data <- deleteArrayElt index array2d.data }
+  { array2d | data = deleteArrayElt index array2d.data }
 
 
 {-| Delete a column -}
 deleteColumn : Int -> Array2D a -> Array2D a
 deleteColumn index array2d =
-  { array2d | data <- Array.map (deleteArrayElt index) array2d.data }
+  { array2d | data = Array.map (deleteArrayElt index) array2d.data }
 
 
 {-| 2D version of Array.indexedMap. First two arguments of map function are the row and column.
@@ -214,7 +214,7 @@ indexedMap fn array2d =
         )
         array2d.data
   in
-    { array2d | data <- mappedData }
+    { array2d | data = mappedData }
 
 
 {-| 2D version of Array.map.

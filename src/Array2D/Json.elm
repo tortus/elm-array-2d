@@ -1,6 +1,10 @@
 module Array2D.Json (decoder) where
 
-{-| JSON decoding/encoding utilities for Array2D. -}
+{-| JSON decoding/encoding utilities for Array2D.
+
+# Decoding 2D arrays
+@docs decoder
+-}
 
 import Array2D exposing (Array2D)
 import Json.Decode as Json
