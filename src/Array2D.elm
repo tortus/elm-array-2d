@@ -39,6 +39,7 @@ to be jagged is currently undefined / handled poorly, so don't do this!
 
 
 import Array exposing (Array)
+import Maybe exposing (andThen)
 
 
 type alias Array2D a = { data : Array (Array a) }
@@ -101,9 +102,7 @@ rows array2d =
 -}
 columns : Array2D a -> Int
 columns array2d =
-  case getRow 0 array2d of
-    Nothing -> 0
-    Just xs -> Array.length xs
+  getRow 0 array2d `andThen` (\row -> Just (Array.length row)) |> Maybe.withDefault 0
 
 
 {-| Check if an Array2D is empty.
@@ -141,11 +140,7 @@ getColumn column array2d =
 -}
 get : Int -> Int -> Array2D a -> Maybe a
 get row col array2d =
-  let rowAry = getRow row array2d
-  in
-    case rowAry of
-      Nothing -> Nothing
-      Just rowAry -> Array.get col rowAry
+  getRow row array2d `andThen` Array.get col
 
 
 {-| Update a cell, returning the changed Array2D.
@@ -154,12 +149,10 @@ get row col array2d =
 -}
 set : Int -> Int -> a -> Array2D a -> Array2D a
 set row col newValue array2d =
-  let rowAry = getRow row array2d
-  in
-    case rowAry of
-      Nothing -> array2d
-      Just rowAry ->
-        { array2d | data = (Array.set row (Array.set col newValue rowAry) array2d.data) }
+  Maybe.map
+    (\rowAry -> { array2d | data = (Array.set row (Array.set col newValue rowAry) array2d.data) })
+    (getRow row array2d)
+  |> Maybe.withDefault array2d
 
 
 {-| Append a row
