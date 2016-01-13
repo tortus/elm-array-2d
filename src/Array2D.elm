@@ -102,7 +102,7 @@ rows array2d =
 -}
 columns : Array2D a -> Int
 columns array2d =
-  getRow 0 array2d `andThen` (\row -> Just (Array.length row)) |> Maybe.withDefault 0
+  getRow 0 array2d |> Maybe.map Array.length |> Maybe.withDefault 0
 
 
 {-| Check if an Array2D is empty.
@@ -149,10 +149,9 @@ get row col array2d =
 -}
 set : Int -> Int -> a -> Array2D a -> Array2D a
 set row col newValue array2d =
-  Maybe.map
-    (\rowAry -> { array2d | data = (Array.set row (Array.set col newValue rowAry) array2d.data) })
-    (getRow row array2d)
-  |> Maybe.withDefault array2d
+  getRow row array2d
+    |> Maybe.map (\rowAry -> { array2d | data = (Array.set row (Array.set col newValue rowAry) array2d.data) })
+    |> Maybe.withDefault array2d
 
 
 {-| Append a row
