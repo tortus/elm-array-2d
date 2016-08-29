@@ -19,7 +19,10 @@ Array2D's can be constructed from an Array or List of rows, where each
 row is an Array or List of cells. Behavior if the nested arrays happen
 to be jagged is currently undefined / handled poorly, so don't do this!
 
-    Array2D.fromList [["Row 1-Col 1", "Row 1-Col 2"], ["Row 2-Col 1", "Row 2-Col 2"]]
+    Array2D.fromList
+      [ ["Row 1-Col 1", "Row 1-Col 2"]
+      , ["Row 2-Col 1", "Row 2-Col 2"]
+      ]
 
 @docs Array2D
 

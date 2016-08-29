@@ -6,19 +6,26 @@ a row and column for every element. Useful for making data grids,
 is it provides row and column operations in addition to getting,
 setting, and mapping over cells.
 
+See the module docs for the complete list of operations: http://package.elm-lang.org/packages/tortus/elm-array-2d/1.0.0/Array2D
+
 
 ```elm
 let
-  myAry =
-    Array2D.fromList [["Row 1-Col 1", "Row 1-Col 2"], ["Row 2-Col 1", "Row 2-Col 2"]]
+  array2d =
+    Array2D.fromList
+      [ ["Row 1-Col 1", "Row 1-Col 2"]
+      , ["Row 2-Col 1", "Row 2-Col 2"]
+      ]
 
   changed =
-    Array2D.set 0 0 "NEW VALUE" myAry -- "Row 1-Col 1" becomes "NEW VALUE"
+    -- "Row 1-Col 1" becomes "NEW VALUE"
+    Array2D.set 0 0 "NEW VALUE" array2d
 
-  mappedAry =
+  mappedArray =
     Array2D.indexedMap
       (\row col cell ->  cell)
       changed
 in
-  mappedAry -- Your app code here
+  -- Your app code here
+  { model | dataGrid = mappedArray }
 ```
