@@ -1,5 +1,5 @@
 {
-    "version": "2.1.0",
+    "version": "1.0.0",
     "summary": "2D Array library for Elm",
     "repository": "https://github.com/tortus/elm-array-2d.git",
     "license": "BSD-3-Clause",
