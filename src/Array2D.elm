@@ -1,4 +1,4 @@
-module Array2D
+module Array2D exposing
   ( Array2D
   , empty, fromArray, fromList, repeat
   , rows, columns, isEmpty
@@ -6,7 +6,7 @@ module Array2D
   , getRow, appendRow, deleteRow
   , getColumn, deleteColumn
   , map, indexedMap
-  ) where
+  )
 
 {-| Implements 2D array using nested Arrays. Useful for implementing data grids.
 Array2D is like a matrix in that cells are accessed by row, then column.
@@ -17,6 +17,8 @@ row is an Array or List of cells. Behavior if the nested arrays happen
 to be jagged is currently undefined / handled poorly, so don't do this!
 
     Array2D.fromList [["Row 1-Col 1", "Row 1-Col 2"], ["Row 2-Col 1", "Row 2-Col 2"]]
+
+@docs Array2D
 
 # Initialization
 @docs empty, fromArray, fromList, repeat
@@ -31,7 +33,7 @@ to be jagged is currently undefined / handled poorly, so don't do this!
 @docs getRow, appendRow, deleteRow
 
 # Adding/removing columns
-@docs getColumn deleteColumn
+@docs getColumn, deleteColumn
 
 # Mapping cell data
 @docs map, indexedMap
@@ -42,6 +44,7 @@ import Array exposing (Array)
 import Maybe exposing (andThen)
 
 
+{-| Base Array2D type -}
 type alias Array2D a = { data : Array (Array a) }
 
 

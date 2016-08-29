@@ -1,4 +1,4 @@
-module Array2D.Json (decoder) where
+module Array2D.Json exposing (decoder)
 
 {-| JSON decoding/encoding utilities for Array2D.
 
