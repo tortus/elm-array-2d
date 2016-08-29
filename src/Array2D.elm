@@ -8,9 +8,12 @@ module Array2D exposing
   , map, indexedMap
   )
 
-{-| Implements 2D array using nested Arrays. Useful for implementing data grids.
-Array2D is like a matrix in that cells are accessed by row, then column.
-Otherwise, it works very similarly to the Array class.
+{-| Implements 2D array using nested Arrays. Useful for implementing data grids,
+as it specifically provides row and column operations.
+
+Cells are accessed by row, then column. Otherwise, it works very similarly to the
+Array class. The documentation examples usually omit converting Lists to Arrays
+for brevity.
 
 Array2D's can be constructed from an Array or List of rows, where each
 row is an Array or List of cells. Behavior if the nested arrays happen
@@ -45,7 +48,8 @@ import Maybe exposing (andThen)
 
 
 {-| Base Array2D type -}
-type alias Array2D a = { data : Array (Array a) }
+type alias Array2D a =
+  { data : Array (Array a) }
 
 
 {-| Create an empty Array2D -}
@@ -56,8 +60,9 @@ empty =
 
 {-| Create an Array2D from an Array of Arrays.
 
-    let row1 = Array.fromList [1, 2]
-        row2 = Array.fromList [2, 3]
+    let
+      row1 = Array.fromList [1, 2]
+      row2 = Array.fromList [2, 3]
     in
       fromArray (Array.fromList [row1, row2])
 -}
