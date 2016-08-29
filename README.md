@@ -2,7 +2,9 @@
 
 2D array library implemented using nested elm Arrays.
 Duplicates the elm Array API as much as possible, but with
-a row and column for every element.
+a row and column for every element. Useful for making data grids,
+is it provides row and column operations in addition to getting,
+setting, and mapping over cells.
 
 
 ```elm
