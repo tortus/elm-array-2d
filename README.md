@@ -23,7 +23,7 @@ let
 
   mappedArray =
     Array2D.indexedMap
-      (\row col cell ->  cell)
+      (\row col cell -> cell)
       changed
 in
   -- Your app code here

@@ -4,7 +4,7 @@ module Array2D exposing
   , rows, columns, isEmpty
   , get, set
   , getRow, appendRow, deleteRow
-  , getColumn, deleteColumn
+  , getColumn, appendColumn, deleteColumn
   , map, indexedMap
   )
 
@@ -16,13 +16,25 @@ Array class. The documentation examples usually omit converting Lists to Arrays
 for brevity.
 
 Array2D's can be constructed from an Array or List of rows, where each
-row is an Array or List of cells. Behavior if the nested arrays happen
-to be jagged is currently undefined / handled poorly, so don't do this!
+row is an Array or List of cells.
 
     Array2D.fromList
       [ ["Row 1-Col 1", "Row 1-Col 2"]
       , ["Row 2-Col 1", "Row 2-Col 2"]
       ]
+
+If the nested arrays happen to be jagged, all rows will be truncated to the
+length of the smallest row! Be careful!
+
+    Array2D.fromList
+      [ [0, 1]
+      , [0, 1, 2]
+      ]
+    -- Becomes:
+      [ [0, 1]
+      , [0, 1]
+      ]
+
 
 @docs Array2D
 
@@ -39,7 +51,7 @@ to be jagged is currently undefined / handled poorly, so don't do this!
 @docs getRow, appendRow, deleteRow
 
 # Adding/removing columns
-@docs getColumn, deleteColumn
+@docs getColumn, appendColumn, deleteColumn
 
 # Mapping cell data
 @docs map, indexedMap
@@ -48,20 +60,26 @@ to be jagged is currently undefined / handled poorly, so don't do this!
 
 import Array exposing (Array)
 import Maybe exposing (andThen)
+import Array2D.ArrayHelpers as Helpers
 
 
 {-| Base Array2D type -}
 type alias Array2D a =
-  { data : Array (Array a) }
+  { data : Array (Array a)
+  , columns : Int
+  }
 
 
 {-| Create an empty Array2D -}
 empty : Array2D a
 empty =
-  { data = Array.empty }
+  { data = Array.empty
+  , columns = 0
+  }
 
 
-{-| Create an Array2D from an Array of Arrays.
+{-| Create an Array2D from an Array of Arrays. All rows will
+be truncated to the length of the shortest row.
 
     let
       row1 = Array.fromList [1, 2]
@@ -71,7 +89,13 @@ empty =
 -}
 fromArray : Array (Array a) -> Array2D a
 fromArray array =
-  { data = array }
+  let
+    (columns, normalizedData) =
+      Helpers.getMinColumnsAndTruncateRows array
+  in
+    { data = normalizedData
+    , columns = columns
+    }
 
 
 {-| Create an Array2D from a List of Lists.
@@ -80,7 +104,8 @@ fromArray array =
 -}
 fromList : List (List a) -> Array2D a
 fromList list =
-  (List.map Array.fromList list)
+  list
+    |> List.map Array.fromList
     |> Array.fromList
     |> fromArray
 
@@ -95,7 +120,9 @@ repeat numRows numColumns e =
   let
     row = Array.repeat numColumns e
   in
-    { data = Array.repeat numRows row }
+    { data = Array.repeat numRows row
+    , columns = numColumns
+    }
 
 
 {-| Get the number of rows in an Array2D
@@ -113,7 +140,7 @@ rows array2d =
 -}
 columns : Array2D a -> Int
 columns array2d =
-  getRow 0 array2d |> Maybe.map Array.length |> Maybe.withDefault 0
+  array2d.columns
 
 
 {-| Check if an Array2D is empty.
@@ -165,39 +192,67 @@ set row col newValue array2d =
     |> Maybe.withDefault array2d
 
 
-{-| Append a row
+{-| Append a row. If the row is too long, it will be truncated,
+too short and it will be expanded with filler elements.
 
     appendRow [3, 4] [[1, 2]] == [[1, 2], [3, 4]]
 -}
-appendRow : Array a -> Array2D a -> Array2D a
-appendRow row array2d =
+appendRow : Array a -> a -> Array2D a -> Array2D a
+appendRow row filler array2d =
   let
-    wrappedRow = Array.fromList [row] -- Need to wrap in array for Array.append
-    newRows = Array.append array2d.data wrappedRow
+    normalizedRow =
+      Helpers.normalize array2d.columns filler row
+
+    newRows =
+      Array.push normalizedRow array2d.data
   in
     { array2d | data = newRows }
 
 
--- Internal helper for deleting elements from Arrays
-deleteArrayElt : Int -> Array a -> Array a
-deleteArrayElt index array =
+{-| Append a column. Filler will be used if the column length
+is less than the number of rows in the Array2D. If it is longer,
+it will be truncated.
+
+    appendColumn [2, 2] [[1], [1]] == [[1, 2], [1,2]]
+-}
+appendColumn : Array a -> a -> Array2D a -> Array2D a
+appendColumn column filler array2d =
   let
-    first = Array.slice 0 index array
-    last = Array.slice (index + 1) (Array.length array) array
+    newData =
+      array2d.data |> Array.indexedMap (\index row ->
+        let
+          newCell = column |> Array.get index |> Maybe.withDefault filler
+        in
+          Array.push newCell row
+      )
   in
-    Array.append first last
+    { array2d | data = newData
+              , columns = array2d.columns + 1
+    }
 
 
 {-| Delete a row -}
 deleteRow : Int -> Array2D a -> Array2D a
 deleteRow index array2d =
-  { array2d | data = deleteArrayElt index array2d.data }
+  { array2d | data = Helpers.deleteArrayElt index array2d.data }
 
 
-{-| Delete a column -}
+{-| Delete a column. If the index is invalid, nothing will happen. -}
 deleteColumn : Int -> Array2D a -> Array2D a
 deleteColumn index array2d =
-  { array2d | data = Array.map (deleteArrayElt index) array2d.data }
+  let
+    newData =
+      Array.map (Helpers.deleteArrayElt index) array2d.data
+
+    newColumns =
+      newData
+        |> Array.get 0
+        |> Maybe.map Array.length
+        |> Maybe.withDefault 0
+  in
+    { array2d | data = newData
+              , columns = newColumns
+    }
 
 
 {-| 2D version of Array.indexedMap. First two arguments of map function are the row and column.
