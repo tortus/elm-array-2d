@@ -29,3 +29,16 @@ in
   -- Your app code here
   { model | dataGrid = mappedArray }
 ```
+
+## Drawbacks and caveats
+
+Most examples of nested Elm components use Lists of elements with a
+unique, constant ID. This allows messages to always be routed to the correct
+sub-component, even if components are removed or added. If you use the index
+of the sub-component instead and the sub-component triggers a Task that takes
+time to complete during which the Array is modified, the completion message
+may be routed to the wrong sub-component.
+
+This is hypothetical though. If your sub-components don't trigger long tasks
+or you don't allow rows or columns to be manipulated until the task returns,
+you should be fine. I think!
