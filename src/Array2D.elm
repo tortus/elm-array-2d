@@ -1,12 +1,24 @@
-module Array2D exposing
-  ( Array2D
-  , empty, fromArray, fromList, repeat
-  , rows, columns, isEmpty
-  , get, set
-  , getRow, appendRow, deleteRow
-  , getColumn, appendColumn, deleteColumn
-  , map, indexedMap
-  )
+module Array2D
+    exposing
+        ( Array2D
+        , empty
+        , fromArray
+        , fromList
+        , repeat
+        , rows
+        , columns
+        , isEmpty
+        , get
+        , set
+        , getRow
+        , appendRow
+        , deleteRow
+        , getColumn
+        , appendColumn
+        , deleteColumn
+        , map
+        , indexedMap
+        )
 
 {-| Implements 2D array using nested Arrays. Useful for implementing data grids,
 as it specifically provides row and column operations.
@@ -71,25 +83,26 @@ you should be fine. I think!
 @docs map, indexedMap
 -}
 
-
 import Array exposing (Array)
 import Maybe exposing (andThen)
 import Array2D.ArrayHelpers as Helpers
 
 
-{-| Base Array2D type -}
+{-| Base Array2D type
+-}
 type alias Array2D a =
-  { data : Array (Array a)
-  , columns : Int
-  }
+    { data : Array (Array a)
+    , columns : Int
+    }
 
 
-{-| Create an empty Array2D -}
+{-| Create an empty Array2D
+-}
 empty : Array2D a
 empty =
-  { data = Array.empty
-  , columns = 0
-  }
+    { data = Array.empty
+    , columns = 0
+    }
 
 
 {-| Create an Array2D from an Array of Arrays. All rows will
@@ -103,13 +116,13 @@ be truncated to the length of the shortest row.
 -}
 fromArray : Array (Array a) -> Array2D a
 fromArray array =
-  let
-    (columns, normalizedData) =
-      Helpers.getMinColumnsAndTruncateRows array
-  in
-    { data = normalizedData
-    , columns = columns
-    }
+    let
+        ( columns, normalizedData ) =
+            Helpers.getMinColumnsAndTruncateRows array
+    in
+        { data = normalizedData
+        , columns = columns
+        }
 
 
 {-| Create an Array2D from a List of Lists.
@@ -118,10 +131,10 @@ fromArray array =
 -}
 fromList : List (List a) -> Array2D a
 fromList list =
-  list
-    |> List.map Array.fromList
-    |> Array.fromList
-    |> fromArray
+    list
+        |> List.map Array.fromList
+        |> Array.fromList
+        |> fromArray
 
 
 {-| Create a 2D of a given size, filled with a default element.
@@ -131,12 +144,13 @@ Similar to Array.repeat
 -}
 repeat : Int -> Int -> a -> Array2D a
 repeat numRows numColumns e =
-  let
-    row = Array.repeat numColumns e
-  in
-    { data = Array.repeat numRows row
-    , columns = numColumns
-    }
+    let
+        row =
+            Array.repeat numColumns e
+    in
+        { data = Array.repeat numRows row
+        , columns = numColumns
+        }
 
 
 {-| Get the number of rows in an Array2D
@@ -145,7 +159,7 @@ repeat numRows numColumns e =
 -}
 rows : Array2D a -> Int
 rows array2d =
-  Array.length array2d.data
+    Array.length array2d.data
 
 
 {-| Get the number of columns in an Array2D
@@ -154,7 +168,7 @@ rows array2d =
 -}
 columns : Array2D a -> Int
 columns array2d =
-  array2d.columns
+    array2d.columns
 
 
 {-| Check if an Array2D is empty.
@@ -163,7 +177,7 @@ columns array2d =
 -}
 isEmpty : Array2D a -> Bool
 isEmpty array2d =
-  Array.isEmpty array2d.data
+    Array.isEmpty array2d.data
 
 
 {-| Get an individual row
@@ -172,7 +186,7 @@ isEmpty array2d =
 -}
 getRow : Int -> Array2D a -> Maybe (Array a)
 getRow row array2d =
-  Array.get row array2d.data
+    Array.get row array2d.data
 
 
 {-| get column-th cell of each row as an Array
@@ -181,9 +195,9 @@ getRow row array2d =
 -}
 getColumn : Int -> Array2D a -> Array (Maybe a)
 getColumn column array2d =
-  Array.map
-    (\rowArray -> Array.get column rowArray)
-    array2d.data
+    Array.map
+        (\rowArray -> Array.get column rowArray)
+        array2d.data
 
 
 {-| Get a cell.
@@ -192,7 +206,7 @@ getColumn column array2d =
 -}
 get : Int -> Int -> Array2D a -> Maybe a
 get row col array2d =
-  getRow row array2d `andThen` Array.get col
+    getRow row array2d `andThen` Array.get col
 
 
 {-| Update a cell, returning the changed Array2D.
@@ -201,9 +215,9 @@ get row col array2d =
 -}
 set : Int -> Int -> a -> Array2D a -> Array2D a
 set row col newValue array2d =
-  getRow row array2d
-    |> Maybe.map (\rowAry -> { array2d | data = (Array.set row (Array.set col newValue rowAry) array2d.data) })
-    |> Maybe.withDefault array2d
+    getRow row array2d
+        |> Maybe.map (\rowAry -> { array2d | data = (Array.set row (Array.set col newValue rowAry) array2d.data) })
+        |> Maybe.withDefault array2d
 
 
 {-| Append a row. If the row is too long, it will be truncated,
@@ -213,14 +227,14 @@ too short and it will be expanded with filler elements.
 -}
 appendRow : Array a -> a -> Array2D a -> Array2D a
 appendRow row filler array2d =
-  let
-    normalizedRow =
-      Helpers.normalize array2d.columns filler row
+    let
+        normalizedRow =
+            Helpers.normalize array2d.columns filler row
 
-    newRows =
-      Array.push normalizedRow array2d.data
-  in
-    { array2d | data = newRows }
+        newRows =
+            Array.push normalizedRow array2d.data
+    in
+        { array2d | data = newRows }
 
 
 {-| Append a column. Filler will be used if the column length
@@ -231,42 +245,49 @@ it will be truncated.
 -}
 appendColumn : Array a -> a -> Array2D a -> Array2D a
 appendColumn column filler array2d =
-  let
-    newData =
-      array2d.data |> Array.indexedMap (\index row ->
-        let
-          newCell = column |> Array.get index |> Maybe.withDefault filler
-        in
-          Array.push newCell row
-      )
-  in
-    { array2d | data = newData
-              , columns = array2d.columns + 1
-    }
+    let
+        newData =
+            array2d.data
+                |> Array.indexedMap
+                    (\index row ->
+                        let
+                            newCell =
+                                column |> Array.get index |> Maybe.withDefault filler
+                        in
+                            Array.push newCell row
+                    )
+    in
+        { array2d
+            | data = newData
+            , columns = array2d.columns + 1
+        }
 
 
-{-| Delete a row -}
+{-| Delete a row
+-}
 deleteRow : Int -> Array2D a -> Array2D a
 deleteRow index array2d =
-  { array2d | data = Helpers.deleteArrayElt index array2d.data }
+    { array2d | data = Helpers.deleteArrayElt index array2d.data }
 
 
-{-| Delete a column. If the index is invalid, nothing will happen. -}
+{-| Delete a column. If the index is invalid, nothing will happen.
+-}
 deleteColumn : Int -> Array2D a -> Array2D a
 deleteColumn index array2d =
-  let
-    newData =
-      Array.map (Helpers.deleteArrayElt index) array2d.data
+    let
+        newData =
+            Array.map (Helpers.deleteArrayElt index) array2d.data
 
-    newColumns =
-      newData
-        |> Array.get 0
-        |> Maybe.map Array.length
-        |> Maybe.withDefault 0
-  in
-    { array2d | data = newData
-              , columns = newColumns
-    }
+        newColumns =
+            newData
+                |> Array.get 0
+                |> Maybe.map Array.length
+                |> Maybe.withDefault 0
+    in
+        { array2d
+            | data = newData
+            , columns = newColumns
+        }
 
 
 {-| 2D version of Array.indexedMap. First two arguments of map function are the row and column.
@@ -275,18 +296,18 @@ deleteColumn index array2d =
 -}
 indexedMap : (Int -> Int -> a -> b) -> Array2D a -> Array2D b
 indexedMap fn array2d =
-  let
-    mappedData =
-      Array.indexedMap
-        (\row rowAry ->
-          (Array.indexedMap
-            (\col value -> (fn row col value))
-            rowAry
-          )
-        )
-        array2d.data
-  in
-    { array2d | data = mappedData }
+    let
+        mappedData =
+            Array.indexedMap
+                (\row rowAry ->
+                    (Array.indexedMap
+                        (\col value -> (fn row col value))
+                        rowAry
+                    )
+                )
+                array2d.data
+    in
+        { array2d | data = mappedData }
 
 
 {-| 2D version of Array.map.
@@ -295,4 +316,4 @@ indexedMap fn array2d =
 -}
 map : (a -> b) -> Array2D a -> Array2D b
 map fn array2d =
-  indexedMap (\row col val -> fn val) array2d
+    indexedMap (\row col val -> fn val) array2d

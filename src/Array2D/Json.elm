@@ -18,10 +18,12 @@ same length as the shortest row!
 -}
 decoder : Json.Decoder a -> Json.Decoder (Array2D a)
 decoder cellDecoder =
-  (Json.array (Json.array cellDecoder)) `Json.andThen` (\array ->
-    let
-      (columns, normalizedData) =
-        Helpers.getMinColumnsAndTruncateRows array
-    in
-      Json.succeed { data = normalizedData, columns = columns }
-  )
+    (Json.array (Json.array cellDecoder))
+        `Json.andThen`
+            (\array ->
+                let
+                    ( columns, normalizedData ) =
+                        Helpers.getMinColumnsAndTruncateRows array
+                in
+                    Json.succeed { data = normalizedData, columns = columns }
+            )
