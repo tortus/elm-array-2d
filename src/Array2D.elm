@@ -57,15 +57,15 @@ unique, constant ID, e.g.:
 
 This allows messages to always be routed to the correct
 element, even if elements are re-ordered, removed, added, etc.
-If you use the *index* of the element instead to create a long Task
+If you use the **index** of the element instead to create a long Task
 that will change an element when it ends, be aware that the target
 element's index may have changed!
 
 For data grids you are probably not going to be re-positioning
 cells. Most data grids simply modify cells in place, which is what
-Array2D is mainly intended for. *The danger comes from deleting rows
-and columns.* During such operations, you may want to temporarily
-make your grid "read-only" somehow.
+Array2D is mainly intended for. **The danger comes from inserting and
+deleting rows and columns.** During such operations, you may want to
+temporarily make your grid "read-only" somehow.
 
 
 # Base type
