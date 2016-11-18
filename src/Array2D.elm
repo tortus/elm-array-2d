@@ -91,7 +91,6 @@ temporarily make your grid "read-only" somehow.
 -}
 
 import Array exposing (Array)
-import Maybe exposing (andThen)
 import Array2D.ArrayHelpers as Helpers
 
 
@@ -213,7 +212,7 @@ getColumn column array2d =
 -}
 get : Int -> Int -> Array2D a -> Maybe a
 get row col array2d =
-    getRow row array2d |> andThen (Array.get col)
+    getRow row array2d |> Maybe.andThen (Array.get col)
 
 
 {-| Update a cell, returning the changed Array2D.
