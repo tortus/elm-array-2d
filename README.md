@@ -33,8 +33,20 @@ in
 ## Drawbacks and caveats
 
 Most examples of nested models in Elm use Lists of elements with a
-unique, constant ID. This allows messages to always be routed to the correct
-element, even if element are re-ordered, removed, added, etc.
-If you use the index of the element instead and then create a Task that
-takes time to complete during which the element's index changes, the completion
-message may be applied to the wrong list element.
+unique, constant ID, e.g.:
+
+```elm
+type alias Cell = { uid : Int, ... }
+```
+
+This allows messages to always be routed to the correct
+element, even if elements are re-ordered, removed, added, etc.
+If you use the *index* of the element instead to create a long Task
+that will change an element when it ends, be aware that the target
+element's index may have changed!
+
+For data grids you are probably not going to be re-positioning
+cells. Most data grids simply modify cells in place, which is what
+Array2D is mainly intended for. *The danger comes from deleting rows
+and columns.* During such operations, you may want to temporarily
+make your grid "read-only" somehow.
