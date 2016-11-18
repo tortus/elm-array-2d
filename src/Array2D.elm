@@ -57,9 +57,9 @@ unique, constant ID, e.g.:
 
 This allows messages to always be routed to the correct
 element, even if elements are re-ordered, removed, added, etc.
-If you use the **index** of the element instead to create a long Task
-that will change an element when it ends, be aware that the target
-element's index may have changed!
+If you use the **index** of an element instead to create a long Task
+that will change the element when it ends, be aware that the target
+element's index may have changed during the task!
 
 For data grids you are probably not going to be re-positioning
 cells. Most data grids simply modify cells in place, which is what
