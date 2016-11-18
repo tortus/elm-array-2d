@@ -251,6 +251,9 @@ is less than the number of rows in the Array2D. If it is longer,
 it will be truncated.
 
     appendColumn [2, 2] -1 [[1], [1]] == [[1, 2], [1,2]]
+
+    -- Filler needed for short column:
+    appendColumn [2] -1 [[1], [1]] == [[1, 2], [1,-1]]
 -}
 appendColumn : Array a -> a -> Array2D a -> Array2D a
 appendColumn column filler array2d =
@@ -299,9 +302,13 @@ deleteColumn index array2d =
         }
 
 
-{-| 2D version of Array.indexedMap. First two arguments of map function are the row and column.
+{-| 2D version of Array.indexedMap. First two arguments of map
+    function are the row and column.
 
-    indexedMap (\row column cell -> toString row) [[1, 2], [3, 4]] == [["0", "0"], ["1", "1"]]
+    indexedMap
+        (\row column cell -> toString row)
+        [[1, 2], [3, 4]]
+        == [["0", "0"], ["1", "1"]]
 -}
 indexedMap : (Int -> Int -> a -> b) -> Array2D a -> Array2D b
 indexedMap fn array2d =
@@ -321,7 +328,10 @@ indexedMap fn array2d =
 
 {-| 2D version of Array.map.
 
-    map (\cell -> toString cell) [[1, 2], [3, 4]] == [["1", "2"], ["3", "4"]]
+    map
+        (\cell -> toString cell)
+        [[1, 2], [3, 4]]
+        == [["1", "2"], ["3", "4"]]
 -}
 map : (a -> b) -> Array2D a -> Array2D b
 map fn array2d =
