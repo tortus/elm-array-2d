@@ -6,7 +6,7 @@ a row and column for every element. Useful for making data grids,
 is it provides row and column operations in addition to getting,
 setting, and mapping over cells.
 
-See the module docs for the complete list of operations: http://package.elm-lang.org/packages/tortus/elm-array-2d/1.0.0/Array2D
+See the module docs for the complete list of operations: http://package.elm-lang.org/packages/tortus/elm-array-2d/2.0.1/Array2D
 
 
 ```elm
@@ -32,13 +32,9 @@ in
 
 ## Drawbacks and caveats
 
-Most examples of nested Elm components use Lists of elements with a
+Most examples of nested models in Elm use Lists of elements with a
 unique, constant ID. This allows messages to always be routed to the correct
-sub-component, even if components are removed or added. If you use the index
-of the sub-component instead and the sub-component triggers a Task that takes
-time to complete during which the Array is modified, the completion message
-may be routed to the wrong sub-component.
-
-This is hypothetical though. If your sub-components don't trigger long tasks
-or you don't allow rows or columns to be manipulated until the task returns,
-you should be fine. I think!
+element, even if element are re-ordered, removed, added, etc.
+If you use the index of the element instead and then create a Task that
+takes time to complete during which the element's index changes, the completion
+message may be applied to the wrong list element.
