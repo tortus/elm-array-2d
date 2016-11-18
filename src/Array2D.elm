@@ -230,7 +230,10 @@ set row col newValue array2d =
 {-| Append a row. If the row is too long, it will be truncated,
 too short and it will be expanded with filler elements.
 
-    appendRow [3, 4] [[1, 2]] == [[1, 2], [3, 4]]
+    appendRow [3, 4] -1 [[1, 2]] == [[1, 2], [3, 4]]
+
+    -- Filler needed for short row:
+    appendRow [3] -1 [[1, 2]] == [[1, 2], [3, -1]]
 -}
 appendRow : Array a -> a -> Array2D a -> Array2D a
 appendRow row filler array2d =
@@ -248,7 +251,7 @@ appendRow row filler array2d =
 is less than the number of rows in the Array2D. If it is longer,
 it will be truncated.
 
-    appendColumn [2, 2] [[1], [1]] == [[1, 2], [1,2]]
+    appendColumn [2, 2] -1 [[1], [1]] == [[1, 2], [1,2]]
 -}
 appendColumn : Array a -> a -> Array2D a -> Array2D a
 appendColumn column filler array2d =
@@ -270,7 +273,7 @@ appendColumn column filler array2d =
         }
 
 
-{-| Delete a row
+{-| Delete a row. Does nothing if the index is out of bounds.
 -}
 deleteRow : Int -> Array2D a -> Array2D a
 deleteRow index array2d =
