@@ -6,7 +6,7 @@ a row and column for every element. Useful for making data grids,
 is it provides row and column operations in addition to getting,
 setting, and mapping over cells.
 
-See the module docs for the complete list of operations: http://package.elm-lang.org/packages/tortus/elm-array-2d/2.0.5/Array2D
+See the module docs for the complete list of operations: http://package.elm-lang.org/packages/tortus/elm-array-2d/latest/Array2D
 
 
 ```elm
