@@ -326,4 +326,4 @@ indexedMap fn array2d =
 -}
 map : (a -> b) -> Array2D a -> Array2D b
 map fn array2d =
-    indexedMap (\row col val -> fn val) array2d
+    indexedMap (\_ _ val -> fn val) array2d
