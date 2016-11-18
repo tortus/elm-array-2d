@@ -50,16 +50,23 @@ length of the smallest row! Be careful!
 
 ## Drawbacks and caveats
 
-Most examples of nested Elm components use Lists of elements with a
-unique, constant ID. This allows messages to always be routed to the correct
-sub-component, even if components are removed or added. If you use the index
-of the sub-component instead and the sub-component triggers a Task that takes
-time to complete during which the Array is modified, the completion message
-may be routed to the wrong sub-component.
+Most examples of nested models in Elm use Lists of elements with a
+unique, constant ID, e.g.:
 
-This is hypothetical though. If your sub-components don't trigger long tasks
-or you don't allow rows or columns to be manipulated until the task returns,
-you should be fine. I think!
+    type alias Cell = { uid : Int, ... }
+
+This allows messages to always be routed to the correct
+element, even if elements are re-ordered, removed, added, etc.
+If you use the *index* of the element instead to create a long Task
+that will change an element when it ends, be aware that the target
+element's index may have changed!
+
+For data grids you are probably not going to be re-positioning
+cells. Most data grids simply modify cells in place, which is what
+Array2D is mainly intended for. *The danger comes from deleting rows
+and columns.* During such operations, you may want to temporarily
+make your grid "read-only" somehow.
+
 
 
 @docs Array2D
