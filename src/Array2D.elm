@@ -68,7 +68,7 @@ and columns.* During such operations, you may want to temporarily
 make your grid "read-only" somehow.
 
 
-
+# Base type
 @docs Array2D
 
 # Initialization
