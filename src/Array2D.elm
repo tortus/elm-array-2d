@@ -4,6 +4,7 @@ module Array2D
         , empty
         , fromArray
         , fromList
+        , initialize
         , repeat
         , rows
         , columns
@@ -72,7 +73,7 @@ temporarily make your grid "read-only" somehow.
 @docs Array2D
 
 # Initialization
-@docs empty, fromArray, fromList, repeat
+@docs empty, fromArray, fromList, initialize, repeat
 
 # Getting info
 @docs rows, columns, isEmpty
@@ -141,6 +142,31 @@ fromList list =
         |> List.map Array.fromList
         |> Array.fromList
         |> fromArray
+
+
+{-| Initialize an Array2D. `initialize rows cols f` creates an array
+with the given dimensions with the element at index `row col`
+initialized to the result of `(f row col)`. Similar to
+`Array.initialize`.
+
+    initialize 2 3 (\row col -> row + col)  == fromList [[0, 1, 2], [3, 4, 5]]
+-}
+initialize : Int -> Int -> (Int -> Int -> a) -> Array2D a
+initialize numRows numColumns f =
+    let
+        rows =
+            Array.initialize
+                numRows
+                (\row ->
+                    (Array.initialize
+                        numColumns
+                        (\col -> f row col)
+                    )
+                )
+    in
+        { data = rows
+        , columns = numColumns
+        }
 
 
 {-| Create a 2D of a given size, filled with a default element.
