@@ -149,7 +149,7 @@ with the given dimensions with the element at index `row col`
 initialized to the result of `(f row col)`. Similar to
 `Array.initialize`.
 
-    initialize 2 3 (\row col -> row + col)  == fromList [[0, 1, 2], [3, 4, 5]]
+    initialize 2 3 (\row col -> row + col)  == fromList [[0, 1, 2], [1, 2, 3]]
 -}
 initialize : Int -> Int -> (Int -> Int -> a) -> Array2D a
 initialize numRows numColumns f =
