@@ -50,3 +50,7 @@ cells. Most data grids simply modify cells in place, which is what
 Array2D is mainly intended for. **The danger comes from inserting and
 deleting rows and columns.** During such operations, you may want to
 temporarily make your grid "read-only" somehow.
+
+## Why not use a single array with a 2D key?
+
+Honestly the nested approach was just easier to understand for all the row and column slicing and splicing that was needed for my use case, but it is probably slower for getting and setting individual elements. One could probably implement all the same row and column features using a single array in Elm and some clever code.
