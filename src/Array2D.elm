@@ -139,11 +139,11 @@ be truncated to the length of the shortest row.
 fromArray : Array (Array a) -> Array2D a
 fromArray array =
     let
-        ( columns, normalizedData ) =
+        ( initialColumns, normalizedData ) =
             Helpers.getMinColumnsAndTruncateRows array
     in
         { data = normalizedData
-        , columns = columns
+        , columns = initialColumns
         }
 
 
@@ -166,11 +166,12 @@ initialized to the result of `(f row col)`. Similar to
 `Array.initialize`.
 
     initialize 2 3 (\row col -> row + col)  == fromList [[0, 1, 2], [1, 2, 3]]
+
 -}
 initialize : Int -> Int -> (Int -> Int -> a) -> Array2D a
 initialize numRows numColumns f =
     let
-        rows =
+        initialRows =
             Array.initialize
                 numRows
                 (\row ->
@@ -180,7 +181,7 @@ initialize numRows numColumns f =
                     )
                 )
     in
-        { data = rows
+        { data = initialRows
         , columns = numColumns
         }
 
@@ -364,19 +365,21 @@ function are the row and column.
 
 -}
 indexedMap : (Int -> Int -> a -> b) -> Array2D a -> Array2D b
-indexedMap fn array2d =
+indexedMap func array2d =
     let
         mappedData =
             Array.indexedMap
                 (\row rowAry ->
                     (Array.indexedMap
-                        (\col value -> (fn row col value))
+                        (\col value -> (func row col value))
                         rowAry
                     )
                 )
                 array2d.data
     in
-        { array2d | data = mappedData }
+        { data = mappedData
+        , columns = array2d.columns
+        }
 
 
 {-| 2D version of Array.map.
