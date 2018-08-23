@@ -1,18 +1,17 @@
 {
-    "type": "application",
-    "source-directories": [
-        "src"
+    "type": "package",
+    "name": "tortus/elm-array-2d",
+    "summary": "2D Array library for Elm",
+    "license": "BSD-3-Clause",
+    "version": "2.1.2",
+    "exposed-modules": [
+        "Array2D",
+        "Array2D.Json"
     ],
-    "elm-version": "0.19.0",
+    "elm-version": "0.19.0 <= v < 0.20.0",
     "dependencies": {
-        "direct": {
-            "elm/core": "1.0.0",
-            "elm/json": "1.0.0"
-        },
-        "indirect": {}
+        "elm/core": "1.0.0 <= v < 2.0.0",
+        "elm/json": "1.0.0 <= v < 2.0.0"
     },
-    "test-dependencies": {
-        "direct": {},
-        "indirect": {}
-    }
+    "test-dependencies": {}
 }
