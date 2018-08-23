@@ -80,7 +80,7 @@ getMinColumnsAndTruncateRows array =
 
 
 {-| Normalize an Array to a specific length, using filler if it is too short,
-   or truncating if too long.
+or truncating if too long.
 -}
 normalize : Int -> a -> Array a -> Array a
 normalize length filler input =

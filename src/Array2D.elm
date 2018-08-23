@@ -70,25 +70,39 @@ temporarily make your grid "read-only" somehow.
 
 
 # Base type
+
 @docs Array2D
 
+
 # Initialization
+
 @docs empty, fromArray, fromList, initialize, repeat
 
+
 # Getting info
+
 @docs rows, columns, isEmpty
 
+
 # Fetching/updating individual cells
+
 @docs get, set
 
+
 # Adding/removing rows
+
 @docs getRow, appendRow, deleteRow
 
+
 # Adding/removing columns
+
 @docs getColumn, appendColumn, deleteColumn
 
+
 # Mapping cell data
+
 @docs map, indexedMap
+
 -}
 
 import Array exposing (Array)
@@ -120,6 +134,7 @@ be truncated to the length of the shortest row.
       row2 = Array.fromList [2, 3]
     in
       fromArray (Array.fromList [row1, row2])
+
 -}
 fromArray : Array (Array a) -> Array2D a
 fromArray array =
@@ -135,6 +150,7 @@ fromArray array =
 {-| Create an Array2D from a List of Lists.
 
     fromList [[1, 2, 3], [4, 5, 6]]
+
 -}
 fromList : List (List a) -> Array2D a
 fromList list =
@@ -173,6 +189,7 @@ initialize numRows numColumns f =
 Similar to Array.repeat
 
     repeat 2 3 0 == [[0, 0, 0], [0, 0, 0]]
+
 -}
 repeat : Int -> Int -> a -> Array2D a
 repeat numRows numColumns e =
@@ -188,6 +205,7 @@ repeat numRows numColumns e =
 {-| Get the number of rows in an Array2D
 
     rows [[1, 2, 3], [4, 5, 6]] == 2
+
 -}
 rows : Array2D a -> Int
 rows array2d =
@@ -197,6 +215,7 @@ rows array2d =
 {-| Get the number of columns in an Array2D
 
     columns [[1, 2, 3], [4, 5, 6]] == 3
+
 -}
 columns : Array2D a -> Int
 columns array2d =
@@ -206,6 +225,7 @@ columns array2d =
 {-| Check if an Array2D is empty.
 
     isEmpty [] == True
+
 -}
 isEmpty : Array2D a -> Bool
 isEmpty array2d =
@@ -215,6 +235,7 @@ isEmpty array2d =
 {-| Get an individual row
 
     getRow 1 [[1, 2], [3, 4]] == Just [3, 4]
+
 -}
 getRow : Int -> Array2D a -> Maybe (Array a)
 getRow row array2d =
@@ -224,6 +245,7 @@ getRow row array2d =
 {-| get column-th cell of each row as an Array
 
     getColumn 1 [[1, 2], [3, 4]] == [Just 2, Just 4]
+
 -}
 getColumn : Int -> Array2D a -> Array (Maybe a)
 getColumn column array2d =
@@ -235,6 +257,7 @@ getColumn column array2d =
 {-| Get a cell.
 
     get 1 1 [[1, 2], [3, 4]] == Just 4
+
 -}
 get : Int -> Int -> Array2D a -> Maybe a
 get row col array2d =
@@ -244,6 +267,7 @@ get row col array2d =
 {-| Update a cell, returning the changed Array2D.
 
     set 0 0 -100 [[1, 2], [3, 4]] == [[-100, 2], [3, 4]]
+
 -}
 set : Int -> Int -> a -> Array2D a -> Array2D a
 set row col newValue array2d =
@@ -259,6 +283,7 @@ too short and it will be expanded with filler elements.
 
     -- Filler needed for short row:
     appendRow [3] -1 [[1, 2]] == [[1, 2], [3, -1]]
+
 -}
 appendRow : Array a -> a -> Array2D a -> Array2D a
 appendRow row filler array2d =
@@ -280,6 +305,7 @@ it will be truncated.
 
     -- Filler needed for short column:
     appendColumn [2] -1 [[1], [1]] == [[1, 2], [1,-1]]
+
 -}
 appendColumn : Array a -> a -> Array2D a -> Array2D a
 appendColumn column filler array2d =
@@ -329,12 +355,13 @@ deleteColumn index array2d =
 
 
 {-| 2D version of Array.indexedMap. First two arguments of map
-    function are the row and column.
+function are the row and column.
 
     indexedMap
         (\row column cell -> toString row)
         [[1, 2], [3, 4]]
         == [["0", "0"], ["1", "1"]]
+
 -}
 indexedMap : (Int -> Int -> a -> b) -> Array2D a -> Array2D b
 indexedMap fn array2d =
@@ -358,6 +385,7 @@ indexedMap fn array2d =
         (\cell -> toString cell)
         [[1, 2], [3, 4]]
         == [["1", "2"], ["3", "4"]]
+
 -}
 map : (a -> b) -> Array2D a -> Array2D b
 map fn array2d =
