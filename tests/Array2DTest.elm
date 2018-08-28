@@ -1,10 +1,10 @@
-module Array2DTest exposing (..)
+module Array2DTest exposing (suite)
 
-import Expect exposing (Expectation)
-import Fuzz exposing (Fuzzer, list, int, string)
-import Test exposing (..)
-import Array2D
 import Array
+import Array2D
+import Expect exposing (Expectation)
+import Fuzz exposing (Fuzzer, int, list, string)
+import Test exposing (..)
 
 
 suite : Test
