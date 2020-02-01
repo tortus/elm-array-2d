@@ -3,7 +3,7 @@
     "name": "tortus/elm-array-2d",
     "summary": "2D Array library for Elm",
     "license": "BSD-3-Clause",
-    "version": "2.1.2",
+    "version": "3.0.0",
     "exposed-modules": [
         "Array2D",
         "Array2D.Json"
