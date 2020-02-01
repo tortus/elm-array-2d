@@ -25,9 +25,7 @@ suite =
                 \_ ->
                     Array2D.initialize 3 2 (\row _ -> row)
                         |> Array2D.getColumn 0
-                        |> Array.toList
-                        |> List.map (Maybe.withDefault -1)
-                        |> Expect.equal [ 0, 1, 2 ]
+                        |> Expect.equal (Just (Array.fromList [ 0, 1, 2 ]))
             , test "calls f with the correct column" <|
                 \_ ->
                     Array2D.initialize 2 3 (\_ col -> col)
@@ -35,5 +33,19 @@ suite =
                         |> Maybe.map Array.toList
                         |> Maybe.withDefault []
                         |> Expect.equal [ 0, 1, 2 ]
+            , test "getColumn example is correct" <|
+                \_ ->
+                    Array2D.getColumn 1 (Array2D.fromList [ [ 1, 2 ], [ 3, 4 ] ])
+                        |> Expect.equal (Just (Array.fromList [ 2, 4 ]))
+            , test "getColumn has correct behavior for Array2d with no rows" <|
+                \_ ->
+                    Array2D.initialize 0 3 (\row _ -> row)
+                        |> Array2D.getColumn 1
+                        |> Expect.equal (Just Array.empty)
+            , test "getColumn has correct behavior for Array2d with no columns" <|
+                \_ ->
+                    Array2D.initialize 3 0 (\row _ -> row)
+                        |> Array2D.getColumn 1
+                        |> Expect.equal Nothing
             ]
         ]
