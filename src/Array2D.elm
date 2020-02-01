@@ -245,14 +245,27 @@ getRow row array2d =
 
 {-| get column-th cell of each row as an Array
 
-    getColumn 1 [[1, 2], [3, 4]] == [Just 2, Just 4]
+    getColumn 1 [[1, 2], [3, 4]] == Just [2, 4]
 
 -}
-getColumn : Int -> Array2D a -> Array (Maybe a)
+getColumn : Int -> Array2D a -> Maybe (Array a)
 getColumn column array2d =
-    Array.map
-        (\rowArray -> Array.get column rowArray)
-        array2d.data
+    getColumnHelper column Array.empty (Array.toList array2d.data)
+
+
+getColumnHelper : Int -> Array a -> List (Array a) -> Maybe (Array a)
+getColumnHelper column items data =
+    case data of
+        head :: rest ->
+            case Array.get column head of
+                Just item ->
+                    getColumnHelper column (Array.push item items) rest
+
+                Nothing ->
+                    Nothing
+
+        [  ] ->
+            Just items
 
 
 {-| Get a cell.
